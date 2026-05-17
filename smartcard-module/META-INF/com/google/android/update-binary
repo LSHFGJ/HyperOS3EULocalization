@@ -1,0 +1,26 @@
+#!/sbin/sh
+
+umask 022
+
+ui_print() { echo "$1"; }
+
+require_module_installer() {
+  ui_print "***************************************"
+  ui_print " HyperOS3 Smart Card Restore is a      "
+  ui_print " Magisk-compatible root-module zip.    "
+  ui_print " Install it from the Magisk, KernelSU, "
+  ui_print " or APatch bootmode module manager so  "
+  ui_print " customize.sh runs with module helpers."
+  ui_print "***************************************"
+  exit 1
+}
+
+OUTFD=$2
+ZIPFILE=$3
+
+if ! command -v install_module >/dev/null 2>&1; then
+  require_module_installer
+fi
+
+install_module
+exit 0

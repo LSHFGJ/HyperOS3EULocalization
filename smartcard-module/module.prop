@@ -1,0 +1,8 @@
+id=HyperOS3SmartCardRestore
+name=HyperOS3 Smart Card Restore
+version=0.1.0-pandora-fuxi
+versionCode=1
+author=LSHFGJ
+description=Restore Xiaomi Smart Card components for xiaomi.eu HyperOS 3 on Xiaomi 17 Pro (pandora) and Xiaomi 13 (fuxi).
+targetDevices=pandora,fuxi
+targetHyperOS=OS3.0.306.0.WBLCNXM,3.0.2.0.WMCCNXM
