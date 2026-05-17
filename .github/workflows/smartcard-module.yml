@@ -1,0 +1,44 @@
+name: Smart Card Module Checks
+
+on:
+  push:
+    paths:
+      - 'smartcard-module/**'
+      - 'scripts/build-smartcard-module.sh'
+      - 'tests/test_smartcard_module_structure.sh'
+      - '.github/workflows/smartcard-module.yml'
+  pull_request:
+    paths:
+      - 'smartcard-module/**'
+      - 'scripts/build-smartcard-module.sh'
+      - 'tests/test_smartcard_module_structure.sh'
+      - '.github/workflows/smartcard-module.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shell-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate smart-card module structure
+        run: bash tests/test_smartcard_module_structure.sh
+
+      - name: Check shell syntax
+        run: |
+          bash -n \
+            smartcard-module/customize.sh \
+            smartcard-module/post-fs-data.sh \
+            smartcard-module/service.sh \
+            smartcard-module/uninstall.sh \
+            smartcard-module/META-INF/com/google/android/update-binary \
+            scripts/build-smartcard-module.sh \
+            tests/test_smartcard_module_structure.sh
+
+      - name: Check build help without ROM extraction
+        run: scripts/build-smartcard-module.sh --help
