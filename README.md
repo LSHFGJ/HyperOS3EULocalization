@@ -55,6 +55,19 @@ HyperOS3EULocalization/
 └── README.md
 ```
 
+
+## HyperOS 3 basic services adaptation
+
+This branch aligns the basic CN service payloads with the actual fuxi xiaomi.eu package paths to avoid duplicate package scans when restoring existing apps:
+
+- 小爱同学: `com.miui.voiceassist` -> `system/product/app/VoiceAssistAndroidT`; related AI vision/service payloads use `system/product/app/AiAsstVision` and `system/product/app/MIUIAiasstService`.
+- 负一屏: `com.miui.personalassistant` -> `system/product/priv-app/PersonalAssistant`.
+- 短信: `com.android.mms` -> `system/product/priv-app/Mms`.
+- 传送门: `com.miui.contentextension` -> `system/product/priv-app/MIUIContentExtension`.
+- 黄页: `com.miui.yellowpage` -> `system/product/priv-app/MIUIYellowPage`.
+
+On KernelSU/SukiSU, restored module-mounted apps must be able to see module mounts in their own process namespaces. If a restored app crashes at early `ActivityThread` binding with empty resources, set App Profile -> Custom and turn off `Umount modules` / `卸载模块` for the restored package. For this basic-services set, that means `com.miui.voiceassist`, `com.xiaomi.aiasst.vision`, `com.xiaomi.aiasst.service`, `com.miui.personalassistant`, `com.android.mms`, `com.miui.contentextension`, `com.miui.yellowpage`, and related host processes such as `com.miui.hybrid` when they load restored resources.
+
 ## 许可证 / License
 
 本项目基于 Apache License 2.0 开源。

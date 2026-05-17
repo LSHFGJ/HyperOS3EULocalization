@@ -86,23 +86,14 @@ if [ -e $MODDIR/system/etc/localization/AuthManager ] ;then
     fail_install
 fi
 
-if [ ! -e /sdcard/Download/MiuiEuLocalization.ini ] ;then
-    # Auto-generated INI should exist now, this check might fail if logic is checking external sdcard
-    # But since we generate it in $MODPATH, we should probably update this check if it looks for /sdcard specific
-    # The original script looks at /sdcard/Download/MiuiEuLocalization.ini OR $MODPATH/MiuiEuLocalization.ini?
-    # Original script line 89: if [ ! -e /sdcard/Download/MiuiEuLocalization.ini ]
-    # Wait, original script was sourcing /sdcard/Download/MiuiEuLocalization.ini!
-    # I need to change it to source $MODPATH/MiuiEuLocalization.ini as well!
-    
-    # Let's fix the sourcing path first.
-    if [ -e $MODPATH/MiuiEuLocalization.ini ]; then
-        . $MODPATH/MiuiEuLocalization.ini
-    elif [ -e /sdcard/Download/MiuiEuLocalization.ini ]; then
-         . /sdcard/Download/MiuiEuLocalization.ini
-    else
-         # Should not happen as we generate it
-         ui_print "- Config not found, using defaults."
-    fi
+if [ -e "$MODPATH/HyperOS3EULocalization.ini" ]; then
+    . "$MODPATH/HyperOS3EULocalization.ini"
+elif [ -e "$MODPATH/MiuiEuLocalization.ini" ]; then
+    . "$MODPATH/MiuiEuLocalization.ini"
+elif [ -e /sdcard/Download/MiuiEuLocalization.ini ]; then
+    . /sdcard/Download/MiuiEuLocalization.ini
+else
+    ui_print "- Config not found, using defaults."
 fi
 
 # Warning Checking
@@ -163,12 +154,12 @@ elif [[ $Fonts == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_FONTS}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_FONTS}"
-    Fonts = false
+    Fonts=false
 fi
 ui_print ""
 
 if [ ! -e $MODPATH/system/product/app/NextPay_$API ] ;then
-    Mipay = false
+    Mipay=false
     ui_print "   ${LANG_TEXT_READING_CONFIG_UNSUPPORT} ${LANG_TEXT_READING_CONFIG_MIPAY}"
 else
     if [[ $Mipay == true ]] ;then
@@ -177,7 +168,7 @@ else
         ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_MIPAY}"
     else
         ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_MIPAY}"
-        Mipay = false
+        Mipay=false
     fi
 fi
 ui_print ""
@@ -188,7 +179,7 @@ elif [[ $HybridPlatform == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_HYBRIDPLATFORM}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_HYBRIDPLATFORM}"
-    HybridPlatform = false
+    HybridPlatform=false
 fi
 ui_print ""
 
@@ -198,7 +189,7 @@ elif [[ $ContentExtension == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_CONTENTEXTENSION}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_CONTENTEXTENSION}"
-    ContentExtension = false
+    ContentExtension=false
 fi
 ui_print ""
 
@@ -208,7 +199,7 @@ elif [[ $VirtualSim == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_VIRTUALSIM}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_VIRTUALSIM}"
-    VirtualSim = false
+    VirtualSim=false
 fi
 ui_print ""
 
@@ -218,7 +209,7 @@ elif [[ $PersonalAssistant == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_PERSONALASSISTANT}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_PERSONALASSISTANT}"
-    PersonalAssistant = false
+    PersonalAssistant=false
 fi
 ui_print ""
 
@@ -228,7 +219,7 @@ elif [[ $Calendar == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_CALENDAR}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_CALENDAR}"
-    Calendar = false
+    Calendar=false
 fi
 ui_print ""
 
@@ -238,7 +229,7 @@ elif [[ $MiuiIme == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_MIUIIME}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_MIUIIME}"
-    MiuiIme = false
+    MiuiIme=false
 fi
 ui_print ""
 
@@ -248,7 +239,7 @@ elif [[ $SogouInput == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_SOUGOUINPUT}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_SOUGOUINPUT}"
-    SogouInput = false
+    SogouInput=false
 fi
 ui_print ""
 
@@ -258,7 +249,7 @@ elif [[ $Mms == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_MMS}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_MMS}"
-    Mms = false
+    Mms=false
 fi
 ui_print ""
 
@@ -268,7 +259,7 @@ elif [[ $YellowPage == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_YELLOWPAGE}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_YELLOWPAGE}"
-    YellowPage = false
+    YellowPage=false
 fi
 ui_print ""
 
@@ -278,7 +269,7 @@ elif [[ $AiAsst == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_AIASST}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_AIASST}"
-    AiAsst = false
+    AiAsst=false
 fi
 ui_print ""
 
@@ -286,7 +277,7 @@ if [[ $VoiceAssist == true ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_VOICEASSIST}"
 
     if [ ! -e $MODPATH/system/product/app/VoiceTrigger_$API ] ;then
-        VoiceTrigger = false
+        VoiceTrigger=false
         ui_print "   ${LANG_TEXT_READING_CONFIG_UNSUPPORT} ${LANG_TEXT_READING_CONFIG_VOICETRIGGER}"
     else
         if [[ $VoiceTrigger == true ]] ;then
@@ -295,18 +286,18 @@ if [[ $VoiceAssist == true ]] ;then
             ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_VOICETRIGGER}"
         else
             ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_VOICETRIGGER}"
-            VoiceTrigger = false
+            VoiceTrigger=false
         fi
     fi
 elif [[ $VoiceAssist == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_VOICEASSIST}"
 
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_VOICETRIGGER}"
-    VoiceTrigger = false
+    VoiceTrigger=false
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_VOICEASSIST}"
-    VoiceAssist = false
-    VoiceTrigger = false
+    VoiceAssist=false
+    VoiceTrigger=false
 fi
 ui_print ""
 
@@ -316,7 +307,7 @@ elif [[ $Weather == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_PERSONALASSISTANT}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_PERSONALASSISTANT}"
-    Weather = false
+    Weather=false
 fi
 ui_print ""
 
@@ -326,7 +317,7 @@ elif [[ $ThemeManager == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_THEMEMANAGER}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_THEMEMANAGER}"
-    ThemeManager = false
+    ThemeManager=false
 fi
 ui_print ""
 
@@ -336,7 +327,7 @@ elif [[ $GboardTheme == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_GBOARDTHEME}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_GBOARDTHEME}"
-    GboardTheme = false
+    GboardTheme=false
 fi
 ui_print ""
 
@@ -346,7 +337,7 @@ elif [[ $VideocallBeautify == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_VIDEOCALLBEAUTIFY}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_VIDEOCALLBEAUTIFY}"
-    VideocallBeautify = false
+    VideocallBeautify=false
 fi
 ui_print ""
 
@@ -356,7 +347,7 @@ elif [[ $NotificationFilter == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_NOTIFICATIONFILTER}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_NOTIFICATIONFILTER}"
-    NotificationFilter = false
+    NotificationFilter=false
 fi
 ui_print ""
 
@@ -366,12 +357,12 @@ elif [[ $Music == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_MUSIC}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_MUSIC}"
-    Music = false
+    Music=false
 fi
 ui_print ""
 
 if [ ! -e $MODPATH/system/app/MiuiAudioMonitor_$API ] ;then
-    SoundRecorder = false
+    SoundRecorder=false
     ui_print "   ${LANG_TEXT_READING_CONFIG_UNSUPPORT} ${LANG_TEXT_READING_CONFIG_SOUNUDRECORDER}"
 else
     if [[ $SoundRecorder == true ]] ;then
@@ -380,7 +371,7 @@ else
         ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_SOUNUDRECORDER}"
     else
         ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_SOUNUDRECORDER}"
-        SoundRecorder = false
+        SoundRecorder=false
     fi
 fi
 ui_print ""
@@ -391,7 +382,7 @@ elif [[ $RemoveMod == false ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_REMOVEMOD}"
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_REMOVEMOD}"
-    RemoveMod = false
+    RemoveMod=false
 fi
 
 waiting 5
@@ -540,7 +531,7 @@ if ! $ContentExtension ;then
 fi
 
 if ! $PersonalAssistant ;then
-    rm -rf $MODPATH/system/product/priv-app/MIUIPersonalAssistantPhoneOS3
+    rm -rf $MODPATH/system/product/priv-app/PersonalAssistant
 fi
 
 if ! $Calendar ;then
@@ -552,7 +543,7 @@ if ! $SogouInput ;then
 fi
 
 if ! $Mms ;then
-    rm -rf $MODPATH/system/product/priv-app/MiuiMms
+    rm -rf $MODPATH/system/product/priv-app/Mms
 fi
 
 if ! $YellowPage ;then
@@ -564,7 +555,7 @@ if ! $AiAsst ;then
 fi
 
 if ! $VoiceAssist ;then
-    rm -rf $MODPATH/system/product/app/AiasstVision
+    rm -rf $MODPATH/system/product/app/AiAsstVision
     rm -rf $MODPATH/system/product/app/VoiceAssistAndroidT
     rm -rf $MODPATH/system/product/app/MIUIAiasstService
 fi
