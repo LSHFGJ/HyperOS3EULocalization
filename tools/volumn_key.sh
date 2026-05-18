@@ -1,6 +1,6 @@
 chooseport() {
   # Original idea by chainfire @xda-developers, improved on by ianmacd @xda-developers
-  #note from chainfire @xda-developers: getevent behaves weird when piped, and busybox grep likes that even less than toolbox/toybox grep
+  # note from chainfire @xda-developers: getevent behaves weird when piped through Android grep variants
   while true; do
     /system/bin/getevent -lc 1 2>&1 | /system/bin/grep VOLUME | /system/bin/grep " DOWN" > $TMPDIR/events
     if (`cat $TMPDIR/events 2>/dev/null | /system/bin/grep VOLUME >/dev/null`); then

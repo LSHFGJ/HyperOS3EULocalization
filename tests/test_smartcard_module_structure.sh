@@ -45,12 +45,19 @@ assert_not_contains_tree() {
   fi
 }
 
+assert_zip_entry() {
+  local archive="$1"
+  local entry="$2"
+  unzip -l "$archive" "$entry" >/dev/null 2>&1 || fail "${archive#$ROOT_DIR/} missing zip entry: $entry"
+}
+
 assert_missing_path() {
   local path="$1"
   [[ ! -e "$path" ]] || fail "path should not exist: ${path#$ROOT_DIR/}"
 }
 
 assert_missing_path "$ROOT_DIR/smartcard-module"
+assert_missing_path "$ROOT_DIR/toolbox"
 assert_executable "$BUILD_SCRIPT"
 assert_executable "$DIAG_SCRIPT"
 assert_executable "$UPDATE_BINARY"
@@ -64,6 +71,9 @@ assert_file "$ROOT_DIR/system/product/priv-app/MIUIContentExtension/MIUIContentE
 assert_file "$ROOT_DIR/system/product/priv-app/MIUIYellowPage/MIUIYellowPage.apk"
 assert_file "$ROOT_DIR/system/product/app/MINextpay/MINextpay.apk"
 assert_file "$ROOT_DIR/system/product/app/MITSMClient/MITSMClient.apk"
+assert_file "$ROOT_DIR/system/product/overlay/HyperOS3MmsFocusAuthOverlay/HyperOS3MmsFocusAuthOverlay.apk"
+assert_file "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/AndroidManifest.xml"
+assert_file "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/res/values/arrays.xml"
 
 assert_contains "$ROOT_DIR/module.prop" '^id=HyperOS3EULocalization$'
 assert_contains "$ROOT_DIR/module.prop" '^name=HyperOS3 EU 本地化$'
@@ -136,9 +146,21 @@ assert_contains "$ROOT_DIR/README.md" 'com\.miui\.hybrid'
 assert_contains "$ROOT_DIR/README.md" 'com\.miui\.tsmclient'
 assert_contains "$ROOT_DIR/README.md" 'system/product/app/MITSMClient'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/UPTsmService'
+assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MINextpay'
+assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MITSMClient'
+assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'NextPay_\$API'
 assert_contains "$ROOT_DIR/README.md" '^# HyperOS3 EU Localization$'
 assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3_EU_Localization_\$\{VERSION\}\.zip'
 assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3 EU Localization'
+assert_contains "$ROOT_DIR/.github/workflows/module-structure.yml" "'system/\*\*'"
+assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/AndroidManifest.xml" 'android:targetPackage="miui\.systemui\.plugin"'
+assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/AndroidManifest.xml" 'android:isStatic="true"'
+assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/AndroidManifest.xml" 'android:targetSdkVersion="28"'
+assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/res/values/arrays.xml" '<string-array name="config_pass_xms_permission">'
+assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/res/values/arrays.xml" '<item>com\.android\.mms</item>'
+assert_zip_entry "$ROOT_DIR/system/product/overlay/HyperOS3MmsFocusAuthOverlay/HyperOS3MmsFocusAuthOverlay.apk" 'AndroidManifest.xml'
+assert_zip_entry "$ROOT_DIR/system/product/overlay/HyperOS3MmsFocusAuthOverlay/HyperOS3MmsFocusAuthOverlay.apk" 'resources.arsc'
+assert_zip_entry "$ROOT_DIR/system/product/overlay/HyperOS3MmsFocusAuthOverlay/HyperOS3MmsFocusAuthOverlay.apk" 'META-INF/OVERLAY.RSA'
 
 assert_not_contains_tree "$ROOT_DIR" 'smartcard-module/|SmartCardPayload'
 

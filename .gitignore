@@ -6,13 +6,6 @@
 # Allow APKs in system/ for Git LFS
 !system/**/*.apk
 
-# Toolbox build outputs
-toolbox/.gradle/
-toolbox/app/build/
-toolbox/build/
-toolbox/local.properties
-toolbox/*.keystore
-
 # Development tools
 android-sdk/
 erofs-utils/
