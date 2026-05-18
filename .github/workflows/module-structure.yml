@@ -1,18 +1,26 @@
-name: Smart Card Module Checks
+name: Module Structure Checks
 
 on:
   push:
     paths:
-      - 'smartcard-module/**'
       - 'scripts/build-smartcard-module.sh'
+      - 'scripts/collect-smartcard-diagnostics.sh'
       - 'tests/test_smartcard_module_structure.sh'
-      - '.github/workflows/smartcard-module.yml'
+      - '.github/workflows/module-structure.yml'
+      - 'META-INF/**'
+      - 'module.prop'
+      - 'customize.sh'
+      - 'tools/**'
   pull_request:
     paths:
-      - 'smartcard-module/**'
       - 'scripts/build-smartcard-module.sh'
+      - 'scripts/collect-smartcard-diagnostics.sh'
       - 'tests/test_smartcard_module_structure.sh'
-      - '.github/workflows/smartcard-module.yml'
+      - '.github/workflows/module-structure.yml'
+      - 'META-INF/**'
+      - 'module.prop'
+      - 'customize.sh'
+      - 'tools/**'
   workflow_dispatch:
 
 permissions:
@@ -26,18 +34,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate smart-card module structure
+      - name: Validate module structure
         run: bash tests/test_smartcard_module_structure.sh
 
       - name: Check shell syntax
         run: |
           bash -n \
-            smartcard-module/customize.sh \
-            smartcard-module/post-fs-data.sh \
-            smartcard-module/service.sh \
-            smartcard-module/uninstall.sh \
-            smartcard-module/META-INF/com/google/android/update-binary \
+            customize.sh \
+            service.sh \
+            tools/unity_install.sh \
+            META-INF/com/google/android/update-binary \
             scripts/build-smartcard-module.sh \
+            scripts/collect-smartcard-diagnostics.sh \
             tests/test_smartcard_module_structure.sh
 
       - name: Check build help without ROM extraction
