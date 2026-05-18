@@ -13,14 +13,14 @@ MODDIR=$NVBASE/modules/$MODID
 # Module Info
 MODMODIFY=`grep_prop modify $MODPATH/module.prop`
 MODVERSION=`grep_prop version $MODPATH/module.prop`
-MODTARGETMODEL=`grep_prop targetModel $MODPATH/module.prop`
-MODTARGETMIUIVERSION=`grep_prop targetMiuiVersion $MODPATH/module.prop`
 # System Info
 BUILDHOST=`getprop ro.build.host`
 MIUIVERSION=`getprop ro.system.build.version.incremental`
+HYPEROSVERSION=`getprop ro.mi.os.version.name`
+BUILDDISPLAY=`getprop ro.build.display.id`
 
 # Module Description
-ModulePropDescription="${LANG_DESCRIPTION_1} $MODTARGETMODEL $MODTARGETMIUIVERSION ${LANG_DESCRIPTION_2}"
+ModulePropDescription="Restore CN HyperOS features for any HyperOS 3 device/build."
 sed -i "s/<DESCRIPTION>/${ModulePropDescription}/g" $MODPATH/module.prop
 
 # Print Info
@@ -34,10 +34,10 @@ ui_print "  ${LANG_TEXT_MODIFIED}: $MODMODIFY"
 fi
 ui_print ""
 ui_print "  ${LANG_TEXT_MODULE_VERSION}: $MODVERSION"
-ui_print "  ${LANG_TEXT_TARGET_MIUI_VERSION}: $MODTARGETMIUIVERSION"
-ui_print "  ${LANG_TEXT_TARGET_MODEL}: $MODTARGETMODEL"
+ui_print "  Target HyperOS: 3.x, any device/build"
 ui_print ""
 ui_print "  ${LANG_TEXT_CURRENT_MIUI_VERSION}: $MIUIVERSION"
+ui_print "  Current HyperOS Version: ${HYPEROSVERSION:-unknown}"
 ui_print "  ${LANG_TEXT_ANDROID_API_LEVEL}: $API"
 ui_print "*******************************************"
 ui_print "- ${LANG_TEXT_INSTALLING_WILL_START_IN_THREE_SECONDS}"
@@ -108,13 +108,13 @@ if [[ $BUILDHOST != "xiaomi.eu" ]] ;then
     waiting 4
 fi
 
-if [[ $MIUIVERSION != $MODTARGETMIUIVERSION ]] ;then
+if [[ "$MIUIVERSION $HYPEROSVERSION $BUILDDISPLAY" != *"OS3"* && "$HYPEROSVERSION" != 3* ]] ;then
     CheckingPass=false
     ui_print ""
-    ui_print "  * ${LANG_COMPATIBILITY_CHECK_WARNING_SYSTEM_VERSION_NOT_MATCH_1}"
-    ui_print "    ${LANG_COMPATIBILITY_CHECK_WARNING_SYSTEM_VERSION_NOT_MATCH_2}"
+    ui_print "  * Warning: HyperOS 3 was not detected from system properties."
+    ui_print "    Continuing because this module no longer gates by exact build."
     ui_print "    ${LANG_TEXT_CURRENT_MIUI_VERSION}: $MIUIVERSION"
-    ui_print "    ${LANG_TEXT_TARGET_MIUI_VERSION}: $MODTARGETMIUIVERSION"
+    ui_print "    Current HyperOS Version: ${HYPEROSVERSION:-unknown}"
     waiting 3
 fi
 
@@ -519,6 +519,7 @@ if ! $Mipay ;then
     rm -rf $MODPATH/system/product/app/MINextpay
     rm -rf $MODPATH/system/product/app/MITSMClient
     rm -rf $MODPATH/system/product/app/MipayService
+    rm -rf $MODPATH/system/product/app/UPTsmService
 fi
 
 if ! $HybridPlatform ;then
