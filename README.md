@@ -26,8 +26,12 @@
 | 小米智能卡客户端 | `com.miui.tsmclient` | `system/product/app/MITSMClient` |
 | 小米支付 / NextPay | `com.miui.nextpay` | `system/product/app/MINextpay` |
 | 银联 TSM 服务 | `com.unionpay.tsmservice.mi` | `system/product/app/UPTsmService` |
+| 小米支付服务 | `com.xiaomi.payment` | `system/product/app/PaymentService` |
 
 这些 payload 已从当前 pandora 国行 HyperOS 3 ROM 对齐；构建脚本仍会在本地 payload 不完整时从指定国行 ROM 中补齐智能卡链路组件。
+
+> [!NOTE]
+> 当前 pandora 国行 ROM 镜像中没有独立的 `com.mipay.wallet` 钱包主 APK。模块恢复的是智能卡、支付服务和应用商店侧的必要系统组件，不会伪造一个 ROM 中不存在的钱包主包。
 
 ### 短信验证码灵动岛修复
 
@@ -51,6 +55,7 @@
 | 传送门 | `com.miui.contentextension` | `system/product/priv-app/MIUIContentExtension` |
 | 黄页 | `com.miui.yellowpage` | `system/product/priv-app/MIUIYellowPage` |
 | 快应用框架 | `com.miui.hybrid` | `system/product/app/HybridPlatform` |
+| 小米应用商店 / GetApps | `com.xiaomi.market` | `system/product/app/MIUISuperMarket` |
 
 安装器中还保留了国际版标识屏蔽选项，它会写入少量系统属性，不是独立恢复应用。
 
@@ -79,7 +84,8 @@
 2. 在 Magisk / KernelSU / SukiSU / APatch 管理器中刷入模块。
 3. 安装器会通过音量键询问是否启用功能组：
    - **基础服务**：小爱、负一屏、短信、传送门、黄页等。
-   - **小米钱包**：智能卡、公交卡、MiPay 相关链路。
+   - **小米钱包**：智能卡、公交卡、MiPay 支付服务相关链路。
+   - **小米应用商店**：应用商店 / GetApps。
    - **系统优化**：国际版标识屏蔽、快应用框架和少量属性项。
 4. 重启设备。
 5. 如果使用 KernelSU / SukiSU / APatch，请按下一节检查 App Profile。
@@ -93,6 +99,7 @@
 
 ```text
 com.miui.tsmclient
+com.xiaomi.payment
 com.android.permissioncontroller
 com.miui.home
 com.android.systemui
@@ -109,6 +116,7 @@ com.android.mms
 com.miui.contentextension
 com.miui.yellowpage
 com.miui.hybrid
+com.xiaomi.market
 ```
 
 > [!TIP]
