@@ -8,8 +8,7 @@ Reintegrate original HyperOS features for xiaomi.eu HyperOS 3 ROMs without a fix
 
 - 🔧 恢复国行版本地化功能（小爱同学、负一屏、短信、传送门、黄页等）
 - 💳 小米钱包、小米智能卡、公交卡、MiPay 支持
-- 📅 日历、天气、音乐、录音机
-- 🎨 字体、主题管理器、通知过滤
+- 🎨 字体、快应用、输入法、通知过滤等系统优化
 
 ## 安装要求 / Requirements
 

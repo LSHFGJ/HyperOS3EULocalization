@@ -83,7 +83,7 @@ set_config() {
 }
 
 enable_all() {
-    local keys="Mipay VoiceAssist PersonalAssistant Weather Calendar Music SoundRecorder ThemeManager Mms ContentExtension YellowPage AiAsst VoiceTrigger RemoveMod Fonts HybridPlatform VirtualSim MiuiIme SogouInput GboardTheme VideocallBeautify NotificationFilter"
+    local keys="Mipay VoiceAssist PersonalAssistant Mms ContentExtension YellowPage AiAsst VoiceTrigger RemoveMod Fonts HybridPlatform VirtualSim MiuiIme SogouInput GboardTheme VideocallBeautify NotificationFilter"
     for key in $keys; do
         set_config $key "true"
     done
@@ -97,7 +97,6 @@ HybridPlatform=false
 ContentExtension=false
 VirtualSim=false
 PersonalAssistant=false
-Calendar=false
 MiuiIme=false
 SogouInput=false
 Mms=false
@@ -105,13 +104,9 @@ YellowPage=false
 AiAsst=false
 VoiceAssist=false
 VoiceTrigger=false
-Weather=false
-ThemeManager=false
 GboardTheme=false
 VideocallBeautify=false
 NotificationFilter=false
-Music=false
-SoundRecorder=false
 RemoveMod=false
 EOF
 }
@@ -179,23 +174,7 @@ else
     ui_print ""
 
     ui_print "  ┌─────────────────────────────────────────────────────────────┐"
-    ui_print "  │  Q4: 媒体与生活                                             │"
-    ui_print "  │      日历 / 天气 / 音乐 / 录音机                             │"
-    ui_print "  └─────────────────────────────────────────────────────────────┘"
-    if vk_choose; then
-        print_success "已选中：媒体与生活"
-        set_config "Calendar" "true"
-        set_config "Weather" "true"
-        set_config "Music" "true"
-        set_config "SoundRecorder" "true"
-        set_config "ThemeManager" "true"
-    else
-        print_info "已跳过"
-    fi
-    ui_print ""
-
-    ui_print "  ┌─────────────────────────────────────────────────────────────┐"
-    ui_print "  │  Q5: 系统优化                                               │"
+    ui_print "  │  Q4: 系统优化                                               │"
     ui_print "  │      屏蔽国际标识 / 字体 / 快应用                            │"
     ui_print "  └─────────────────────────────────────────────────────────────┘"
     if vk_choose; then

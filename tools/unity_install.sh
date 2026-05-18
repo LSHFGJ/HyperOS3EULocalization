@@ -213,16 +213,6 @@ else
 fi
 ui_print ""
 
-if [[ $Calendar == true ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_CALENDAR}"
-elif [[ $Calendar == false ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_CALENDAR}"
-else
-    ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_CALENDAR}"
-    Calendar=false
-fi
-ui_print ""
-
 if [[ $MiuiIme == true ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_MIUIIME}"
 elif [[ $MiuiIme == false ]] ;then
@@ -301,26 +291,6 @@ else
 fi
 ui_print ""
 
-if [[ $Weather == true ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_PERSONALASSISTANT}"
-elif [[ $Weather == false ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_PERSONALASSISTANT}"
-else
-    ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_PERSONALASSISTANT}"
-    Weather=false
-fi
-ui_print ""
-
-if [[ $ThemeManager == true ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_THEMEMANAGER}"
-elif [[ $ThemeManager == false ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_THEMEMANAGER}"
-else
-    ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_THEMEMANAGER}"
-    ThemeManager=false
-fi
-ui_print ""
-
 if [[ $GboardTheme == true ]] ;then
     ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_GBOARDTHEME}"
 elif [[ $GboardTheme == false ]] ;then
@@ -348,31 +318,6 @@ elif [[ $NotificationFilter == false ]] ;then
 else
     ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_NOTIFICATIONFILTER}"
     NotificationFilter=false
-fi
-ui_print ""
-
-if [[ $Music == true ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_MUSIC}"
-elif [[ $Music == false ]] ;then
-    ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_MUSIC}"
-else
-    ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_MUSIC}"
-    Music=false
-fi
-ui_print ""
-
-if [ ! -e $MODPATH/system/app/MiuiAudioMonitor_$API ] ;then
-    SoundRecorder=false
-    ui_print "   ${LANG_TEXT_READING_CONFIG_UNSUPPORT} ${LANG_TEXT_READING_CONFIG_SOUNUDRECORDER}"
-else
-    if [[ $SoundRecorder == true ]] ;then
-        ui_print "   ${LANG_TEXT_READING_CONFIG_TRUE} ${LANG_TEXT_READING_CONFIG_SOUNUDRECORDER}"
-    elif [[ $SoundRecorder == false ]] ;then
-        ui_print "   ${LANG_TEXT_READING_CONFIG_FALSE} ${LANG_TEXT_READING_CONFIG_SOUNUDRECORDER}"
-    else
-        ui_print "   ${LANG_TEXT_READING_CONFIG_NOT_FOUND} ${LANG_TEXT_READING_CONFIG_SOUNUDRECORDER}"
-        SoundRecorder=false
-    fi
 fi
 ui_print ""
 
@@ -414,10 +359,6 @@ if $PersonalAssistant ;then
     touch $MODPATH/system/etc/localization/PersonalAssistant
 fi
 
-if $Calendar ;then
-    touch $MODPATH/system/etc/localization/Calendar
-fi
-
 if $MiuiIme ;then
     touch $MODPATH/system/etc/localization/MiuiIme
 fi
@@ -445,14 +386,6 @@ if $VoiceAssist ;then
     fi
 fi
 
-if $Weather ;then
-    touch $MODPATH/system/etc/localization/Weather
-fi
-
-if $ThemeManager ;then
-    touch $MODPATH/system/etc/localization/ThemeManager
-fi
-
 if $GboardTheme ;then
     touch $MODPATH/system/etc/localization/GboardTheme
 fi
@@ -465,20 +398,12 @@ if $NotificationFilter ;then
     touch $MODPATH/system/etc/localization/NotificationFilter
 fi
 
-if $Music ;then
-    touch $MODPATH/system/etc/localization/Music
-fi
-
-if $SoundRecorder ;then
-    touch $MODPATH/system/etc/localization/SoundRecorder
-fi
-
 if $RemoveMod ;then
     touch $MODPATH/system/etc/localization/RemoveMod
 fi
 
 # Dependence Processing
-if $Calendar || $VirtualSim || $Mms || $ContentExtension || $Weather || $PersonalAssistant || $ThemeManager || $AiAsst || $NotificationFilter || $Music || $SoundRecorder || $VoiceAssist || $MiuiIme || $AiAsst || $YellowPage ;then
+if $VirtualSim || $Mms || $ContentExtension || $PersonalAssistant || $AiAsst || $NotificationFilter || $VoiceAssist || $MiuiIme || $AiAsst || $YellowPage ;then
     RemoveMod=true
 fi
 
@@ -487,9 +412,7 @@ if $AiAsst ;then
 fi
 
 if $RemoveMod ;then
-    Calendar=true
     Contacts=true
-    Weather=true
 else
     Contacts=false
 fi
@@ -518,7 +441,6 @@ fi
 if ! $Mipay ;then
     rm -rf $MODPATH/system/product/app/MINextpay
     rm -rf $MODPATH/system/product/app/MITSMClient
-    rm -rf $MODPATH/system/product/app/MipayService
     rm -rf $MODPATH/system/product/app/UPTsmService
 fi
 
@@ -533,10 +455,6 @@ fi
 
 if ! $PersonalAssistant ;then
     rm -rf $MODPATH/system/product/priv-app/PersonalAssistant
-fi
-
-if ! $Calendar ;then
-    rm -rf $MODPATH/system/product/data-app/MIUICalendar
 fi
 
 if ! $SogouInput ;then
@@ -571,25 +489,6 @@ else
     rm -rf $MODPATH/system/product/app/VoiceTrigger_*
 fi
 
-if ! $Weather ;then
-    rm -rf $MODPATH/system/product/data-app/MIUIWeather
-fi
-
-if ! $ThemeManager ;then
-    rm -rf $MODPATH/system/app/ThemeManager
-fi
-
-if ! $Music ;then
-    rm -rf $MODPATH/system/product/data-app/MIUIMusicT
-fi
-
-if ! $SoundRecorder ;then
-    rm -rf $MODPATH/system/app/MiuiAudioMonitor_*
-else
-    mv $MODPATH/system/app/MiuiAudioMonitor_$API $MODPATH/system/app/MiuiAudioMonitor
-    rm -rf $MODPATH/system/app/MiuiAudioMonitor_*
-fi
-
 if ! $Contacts ;then
     rm -rf $MODPATH/system/priv-app/Contacts
 fi
@@ -616,10 +515,6 @@ echo "" >> $MODPATH/system.prop
 
 if $Mipay ;then
     echo "ro.se.type=eSE,HCE,UICC" >> $MODPATH/system.prop
-fi
-
-if $Calendar ;then
-    echo "ro.miui.mcc=9460" >> $MODPATH/system.prop
 fi
 
 if $AiAsst ;then
@@ -649,10 +544,6 @@ echo "" >> $MODPATH/system.prop
 echo "moe.minamigo.miuieulocalization=$MODVERSION" >> $MODPATH/system.prop
 
 # Data Cleaning
-if $ThemeManager ; then
-    rm -rf /data/miui/cust_variant
-fi
-
 if $PersonalAssistant ;then
     if [ ! -e $MODDIR/system/etc/localization/PersonalAssistant ] ;then
         rm -rf /data/data/com.miui.personalassistant/*
@@ -663,16 +554,6 @@ else
     fi
 fi
 
-if $Calendar ;then
-    if [ ! -e $MODDIR/system/etc/localization/Calendar ] ;then
-        rm -rf /data/data/com.android.calendar/*
-    fi
-else
-    if [ -e $MODDIR/system/etc/localization/Calendar ] ;then
-        rm -rf /data/data/com.android.calendar/*
-    fi
-fi
-
 if $Mms ;then
     if [ ! -e $MODDIR/system/etc/localization/Mms ] ;then
         rm -rf /data/data/com.android.mms/*
@@ -680,36 +561,6 @@ if $Mms ;then
 else
     if [ -e $MODDIR/system/etc/localization/Mms ] ;then
         rm -rf /data/data/com.android.mms/*
-    fi
-fi
-
-if $Weather ;then
-    if [ ! -e $MODDIR/system/etc/localization/Weather ] ;then
-        rm -rf /data/data/com.miui.weather/*
-    fi
-else
-    if [ -e $MODDIR/system/etc/localization/Weather ] ;then
-        rm -rf /data/data/com.miui.weather/*
-    fi
-fi
-
-if $ThemeManager ;then
-    if [ ! -e $MODDIR/system/etc/localization/ThemeManager ] ;then
-        rm -rf /data/data/com.android.thememanager/*
-    fi
-else
-    if [ -e $MODDIR/system/etc/localization/ThemeManager ] ;then
-        rm -rf /data/data/com.android.thememanager/*
-    fi
-fi
-
-if $Music ;then
-    if [ ! -e $MODDIR/system/etc/localization/Music ] ;then
-        rm -rf /data/data/com.miui.player/*
-    fi
-else
-    if [ -e $MODDIR/system/etc/localization/Music ] ;then
-        rm -rf /data/data/com.miui.player/*
     fi
 fi
 
