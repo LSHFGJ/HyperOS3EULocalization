@@ -1,6 +1,6 @@
 ##########################################################################################
 #
-# HyperOS3 EU Localization - Magisk/KernelSU Module Installer
+# HyperOS3 EU Localization - Magisk/KernelSU/APatch Module Installer
 # Forked from MiuiEULocalization by MinaMiGo
 #
 ##########################################################################################
@@ -21,9 +21,9 @@ print_banner() {
     ui_print "║           HyperOS 3 EU Localization Module                   ║"
     ui_print "║                                                              ║"
     ui_print "╠══════════════════════════════════════════════════════════════╣"
-    ui_print "║  Version: 3.0.2.0                                            ║"
-    ui_print "║  Author:  LSHFGJ & MinaMiGo                                  ║"
-    ui_print "║  Target:  Xiaomi 13 (fuxi) - xiaomi.eu HyperOS3              ║"
+    ui_print "║  Version: v2.0                                                ║"
+    ui_print "║  Author:  LSHFGJ                                             ║"
+    ui_print "║  Target:  Any HyperOS 3 device/build                         ║"
     ui_print "╚══════════════════════════════════════════════════════════════╝"
     ui_print ""
 }
@@ -240,8 +240,8 @@ ui_print "║              ✓ INSTALLATION COMPLETED                        ║
 ui_print "║                                                              ║"
 ui_print "║  Please reboot your device to apply changes.                 ║"
 ui_print "║                                                              ║"
-ui_print "║  Don't forget to install the Toolbox APK and enable         ║"
-ui_print "║  the Xposed module in LSPosed/LSPatch for full features.     ║"
+    ui_print "║  KernelSU/SukiSU users: disable app-profile module unmount  ║"
+    ui_print "║  for restored apps if labels/resources cannot be loaded.     ║"
 ui_print "║                                                              ║"
 ui_print "╚══════════════════════════════════════════════════════════════╝"
 ui_print ""
