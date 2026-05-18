@@ -2,10 +2,9 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-MODULE_DIR="$ROOT_DIR/smartcard-module"
 BUILD_SCRIPT="$ROOT_DIR/scripts/build-smartcard-module.sh"
 DIAG_SCRIPT="$ROOT_DIR/scripts/collect-smartcard-diagnostics.sh"
-UPDATE_BINARY="$MODULE_DIR/META-INF/com/google/android/update-binary"
+UPDATE_BINARY="$ROOT_DIR/META-INF/com/google/android/update-binary"
 
 fail() {
   printf 'FAIL: %s\n' "$1" >&2
@@ -29,26 +28,32 @@ assert_contains() {
   grep -Eq "$pattern" "$path" || fail "${path#$ROOT_DIR/} does not contain pattern: $pattern"
 }
 
+assert_not_contains() {
+  local path="$1"
+  local pattern="$2"
+  if grep -Eq "$pattern" "$path"; then
+    fail "${path#$ROOT_DIR/} contains forbidden pattern: $pattern"
+  fi
+}
+
 assert_not_contains_tree() {
   local path="$1"
   local pattern="$2"
-  if grep -RInE "$pattern" "$path" >/tmp/smartcard_module_forbidden_matches.txt 2>/dev/null; then
+  if grep -RInE --exclude='*.apk' --exclude-dir='.git' --exclude-dir='.worktrees' --exclude-dir='tests' "$pattern" "$path" >/tmp/smartcard_module_forbidden_matches.txt 2>/dev/null; then
     cat /tmp/smartcard_module_forbidden_matches.txt >&2
     fail "forbidden pattern found under ${path#$ROOT_DIR/}: $pattern"
   fi
 }
 
-assert_file "$MODULE_DIR/module.prop"
-assert_executable "$MODULE_DIR/customize.sh"
-assert_executable "$MODULE_DIR/post-fs-data.sh"
-assert_executable "$MODULE_DIR/service.sh"
-assert_executable "$MODULE_DIR/uninstall.sh"
-assert_file "$MODULE_DIR/system.prop"
-assert_file "$MODULE_DIR/config/smartcard-components.tsv"
-assert_executable "$MODULE_DIR/META-INF/com/google/android/update-binary"
-assert_file "$MODULE_DIR/META-INF/com/google/android/updater-script"
+assert_missing_path() {
+  local path="$1"
+  [[ ! -e "$path" ]] || fail "path should not exist: ${path#$ROOT_DIR/}"
+}
+
+assert_missing_path "$ROOT_DIR/smartcard-module"
 assert_executable "$BUILD_SCRIPT"
 assert_executable "$DIAG_SCRIPT"
+assert_executable "$UPDATE_BINARY"
 
 assert_file "$ROOT_DIR/system/product/app/VoiceAssistAndroidT/VoiceAssistAndroidT.apk"
 assert_file "$ROOT_DIR/system/product/app/AiAsstVision/AiAsstVision.apk"
@@ -57,22 +62,31 @@ assert_file "$ROOT_DIR/system/product/priv-app/PersonalAssistant/PersonalAssista
 assert_file "$ROOT_DIR/system/product/priv-app/Mms/Mms.apk"
 assert_file "$ROOT_DIR/system/product/priv-app/MIUIContentExtension/MIUIContentExtension.apk"
 assert_file "$ROOT_DIR/system/product/priv-app/MIUIYellowPage/MIUIYellowPage.apk"
+assert_file "$ROOT_DIR/system/product/app/MINextpay/MINextpay.apk"
+assert_file "$ROOT_DIR/system/product/app/MITSMClient/MITSMClient.apk"
 
-assert_contains "$MODULE_DIR/module.prop" '^id=HyperOS3SmartCardRestore$'
-assert_contains "$MODULE_DIR/module.prop" '^targetDevices=pandora,fuxi$'
-assert_contains "$MODULE_DIR/module.prop" '^targetHyperOS=OS3\.0\.306\.0\.WBLCNXM,3\.0\.2\.0\.WMCCNXM$'
-assert_contains "$MODULE_DIR/customize.sh" 'Target: Xiaomi 17 Pro \(pandora\) / Xiaomi 13 \(fuxi\)'
-assert_contains "$MODULE_DIR/customize.sh" 'is_supported_device\(\)'
-assert_contains "$MODULE_DIR/customize.sh" 'pandora\|fuxi'
-assert_contains "$MODULE_DIR/README.md" 'Xiaomi 13 `fuxi`'
-assert_contains "$MODULE_DIR/system.prop" '^ro\.se\.type=eSE,HCE,UICC$'
+assert_contains "$ROOT_DIR/module.prop" '^id=HyperOS3EULocalization$'
+assert_contains "$ROOT_DIR/module.prop" '^name=HyperOS3 EU 本地化$'
+assert_contains "$ROOT_DIR/module.prop" '^version=v2\.0$'
+assert_contains "$ROOT_DIR/module.prop" '^versionCode=20$'
+assert_contains "$ROOT_DIR/module.prop" '^author=LSHFGJ$'
+assert_not_contains "$ROOT_DIR/module.prop" 'target(Model|MiuiVersion)|WMCCNXM|WBLCNXM|fuxi|pandora'
+assert_contains "$ROOT_DIR/customize.sh" 'HyperOS 3 EU Localization Module'
+assert_contains "$ROOT_DIR/customize.sh" 'Version: v2\.0'
+assert_contains "$ROOT_DIR/customize.sh" 'Author:  LSHFGJ'
+assert_contains "$ROOT_DIR/customize.sh" 'Target:  Any HyperOS 3 device/build'
+assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'MODTARGETMODEL|MODTARGETMIUIVERSION|LANG_TEXT_TARGET_MIUI_VERSION|LANG_TEXT_TARGET_MODEL'
+assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'SYSTEM_VERSION_NOT_MATCH|targetMiuiVersion|targetModel'
 assert_contains "$BUILD_SCRIPT" '^ROM_ROOT="\$\{ROM_ROOT:-/mnt/e/rom\}"$'
 assert_contains "$BUILD_SCRIPT" '^WORK_DIR="\$\{WORK_DIR:-\$ROM_ROOT/_analysis/build-smartcard\}"$'
 assert_contains "$BUILD_SCRIPT" '^OUT_DIR="\$\{OUT_DIR:-\$ROM_ROOT/_analysis/out\}"$'
 assert_contains "$BUILD_SCRIPT" '^MOUNT_ROOT="\$\{MOUNT_ROOT:-\$\{TMPDIR:-/tmp\}/hyperos-smartcard-mount\}"$'
 assert_contains "$BUILD_SCRIPT" '^LOCAL_PAYLOAD_DIR="\$\{LOCAL_PAYLOAD_DIR:-\$ROOT_DIR/system/product/app\}"$'
 assert_contains "$BUILD_SCRIPT" '^KEEP_WORK="\$\{KEEP_WORK:-0\}"$'
-assert_contains "$BUILD_SCRIPT" 'HyperOS3SmartCardRestore_v0\.1\.0-pandora-fuxi\.zip'
+assert_contains "$BUILD_SCRIPT" 'HyperOS3_EU_Localization_\$\{MODULE_VERSION\}\.zip'
+assert_contains "$BUILD_SCRIPT" '^MODULE_VERSION="\$\{MODULE_VERSION:-v2\.0\}"$'
+assert_contains "$BUILD_SCRIPT" 'Set CN_ROM_DIR to a HyperOS 3 CN ROM image directory'
+assert_not_contains "$BUILD_SCRIPT" 'smartcard-module|SmartCardPayload|pandora|WBLCNXM|HyperOS3SmartCardRestore_v0\.1\.0-pandora-fuxi'
 assert_contains "$BUILD_SCRIPT" 'require_command 7z'
 assert_contains "$BUILD_SCRIPT" '7z not found'
 assert_contains "$BUILD_SCRIPT" '^cleanup_work_files\(\) \{$'
@@ -94,12 +108,12 @@ assert_contains "$DIAG_SCRIPT" 'com\.miui\.home'
 assert_contains "$DIAG_SCRIPT" 'com\.android\.systemui'
 assert_contains "$DIAG_SCRIPT" 'nsenter -t'
 assert_contains "$DIAG_SCRIPT" 'MITSMClient\.apk'
-assert_contains "$DIAG_SCRIPT" 'HyperOS3SmartCardRestore'
-assert_contains "$MODULE_DIR/README.md" 'Umount modules'
-assert_contains "$MODULE_DIR/README.md" 'com\.miui\.tsmclient'
-assert_contains "$MODULE_DIR/README.md" 'com\.android\.permissioncontroller'
-assert_contains "$MODULE_DIR/README.md" 'com\.miui\.home'
-assert_contains "$MODULE_DIR/README.md" 'com\.android\.systemui'
+assert_contains "$DIAG_SCRIPT" 'HyperOS3EULocalization'
+assert_contains "$ROOT_DIR/README.md" 'Umount modules'
+assert_contains "$ROOT_DIR/README.md" 'com\.miui\.tsmclient'
+assert_contains "$ROOT_DIR/README.md" 'com\.android\.permissioncontroller'
+assert_contains "$ROOT_DIR/README.md" 'com\.miui\.home'
+assert_contains "$ROOT_DIR/README.md" 'com\.android\.systemui'
 assert_contains "$UPDATE_BINARY" 'KernelSU'
 assert_contains "$UPDATE_BINARY" 'APatch'
 assert_contains "$UPDATE_BINARY" 'bootmode module manager'
@@ -119,16 +133,17 @@ assert_contains "$ROOT_DIR/README.md" 'Umount modules'
 assert_contains "$ROOT_DIR/README.md" 'com\.xiaomi\.aiasst\.vision'
 assert_contains "$ROOT_DIR/README.md" 'com\.xiaomi\.aiasst\.service'
 assert_contains "$ROOT_DIR/README.md" 'com\.miui\.hybrid'
+assert_contains "$ROOT_DIR/README.md" 'com\.miui\.tsmclient'
+assert_contains "$ROOT_DIR/README.md" 'system/product/app/MITSMClient'
+assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/UPTsmService'
+assert_contains "$ROOT_DIR/README.md" '^# HyperOS3 EU Localization$'
+assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3_EU_Localization_\$\{VERSION\}\.zip'
+assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3 EU Localization'
 
-assert_contains "$MODULE_DIR/config/smartcard-components.tsv" $'^MINextpay\tcom\.miui\.nextpay\tproduct/app/MINextpay\trequired$'
-assert_contains "$MODULE_DIR/config/smartcard-components.tsv" $'^MITSMClient\tcom\.miui\.tsmclient\tproduct/app/MITSMClient\trequired$'
-assert_contains "$MODULE_DIR/config/smartcard-components.tsv" $'^UPTsmService\tcom\.unionpay\.tsmservice\.mi\tproduct/app/UPTsmService\trequired$'
-
-assert_not_contains_tree "$MODULE_DIR" '(LSPosed|LSPatch|Xposed|Riru|Zygisk|metamagisk|元模块)'
-assert_not_contains_tree "$MODULE_DIR" '/data/adb/magisk/util_functions\.sh'
+assert_not_contains_tree "$ROOT_DIR" 'smartcard-module/|SmartCardPayload'
 
 if [[ -e "$ROOT_DIR/system/product/app/AiasstVision" || -e "$ROOT_DIR/system/product/priv-app/MiuiMms" || -e "$ROOT_DIR/system/product/priv-app/MIUIPersonalAssistantPhoneOS3" ]]; then
-  fail "legacy payload path still exists; use actual fuxi codePath directory names"
+  fail "legacy payload path still exists; use actual HyperOS 3 codePath directory names"
 fi
 
 printf 'Smart card module structure looks valid.\n'
