@@ -158,7 +158,7 @@ else
 fi
 ui_print ""
 
-if [ ! -e $MODPATH/system/product/app/NextPay_$API ] ;then
+if [ ! -e "$MODPATH/system/product/app/MINextpay" ] || [ ! -e "$MODPATH/system/product/app/MITSMClient" ] || [ ! -e "$MODPATH/system/product/app/UPTsmService" ] ;then
     Mipay=false
     ui_print "   ${LANG_TEXT_READING_CONFIG_UNSUPPORT} ${LANG_TEXT_READING_CONFIG_MIPAY}"
 else
