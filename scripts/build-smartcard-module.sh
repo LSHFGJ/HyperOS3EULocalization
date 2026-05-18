@@ -50,7 +50,7 @@ apk_has_dex() {
 
 needs_cn_product() {
   local component
-  for component in MINextpay MITSMClient UPTsmService; do
+  for component in MINextpay MITSMClient UPTsmService PaymentService MIUISuperMarket; do
     local local_apk="$LOCAL_PAYLOAD_DIR/$component/$component.apk"
     if [ ! -f "$local_apk" ] || ! apk_has_dex "$local_apk"; then
       return 0
@@ -150,7 +150,7 @@ fi
 cp -a "$ROOT_DIR/META-INF" "$ROOT_DIR/module.prop" "$ROOT_DIR/customize.sh" "$ROOT_DIR/service.sh" "$ROOT_DIR/uninstall.sh" "$ROOT_DIR/lang" "$ROOT_DIR/tools" "$MODULE_BUILD/"
 cp -a "$ROOT_DIR/system" "$MODULE_BUILD/"
 
-for component in MINextpay MITSMClient UPTsmService; do
+for component in MINextpay MITSMClient UPTsmService PaymentService MIUISuperMarket; do
   copy_component "$component"
 done
 

@@ -86,6 +86,7 @@ if [[ "$MIUIVERSION $HYPEROSVERSION $BUILDDISPLAY" != *"OS3"* && "$HYPEROSVERSIO
 fi
 
 Mipay=${Mipay:-false}
+AppStore=${AppStore:-false}
 HybridPlatform=${HybridPlatform:-false}
 ContentExtension=${ContentExtension:-false}
 PersonalAssistant=${PersonalAssistant:-false}
@@ -95,9 +96,14 @@ AiAsst=${AiAsst:-false}
 VoiceAssist=${VoiceAssist:-false}
 RemoveMod=${RemoveMod:-false}
 
-if [ ! -e "$MODPATH/system/product/app/MINextpay" ] || [ ! -e "$MODPATH/system/product/app/MITSMClient" ] || [ ! -e "$MODPATH/system/product/app/UPTsmService" ] ;then
+if [ ! -e "$MODPATH/system/product/app/MINextpay" ] || [ ! -e "$MODPATH/system/product/app/MITSMClient" ] || [ ! -e "$MODPATH/system/product/app/UPTsmService" ] || [ ! -e "$MODPATH/system/product/app/PaymentService" ] ;then
     Mipay=false
     log_warn "Smart-card payload incomplete; disabling Xiaomi smart card."
+fi
+
+if [ ! -e "$MODPATH/system/product/app/MIUISuperMarket" ] ;then
+    AppStore=false
+    log_warn "Xiaomi App Store payload missing; disabling App Store."
 fi
 
 if bool_enabled "$AiAsst" ;then
@@ -131,7 +137,7 @@ touch "$MODPATH/system/etc/localization/SelectionSaved"
 
 log_section "Selected"
 enabled_summary=""
-for item in Mipay HybridPlatform ContentExtension PersonalAssistant Mms YellowPage AiAsst VoiceAssist RemoveMod; do
+for item in Mipay AppStore HybridPlatform ContentExtension PersonalAssistant Mms YellowPage AiAsst VoiceAssist RemoveMod; do
     eval "item_value=\${$item:-false}"
     if bool_enabled "$item_value" ;then
         mark_selected "$item"
@@ -149,6 +155,11 @@ if ! bool_enabled "$Mipay" ;then
     remove_path "system/product/app/MINextpay"
     remove_path "system/product/app/MITSMClient"
     remove_path "system/product/app/UPTsmService"
+    remove_path "system/product/app/PaymentService"
+fi
+
+if ! bool_enabled "$AppStore" ;then
+    remove_path "system/product/app/MIUISuperMarket"
 fi
 
 if ! bool_enabled "$HybridPlatform" ;then

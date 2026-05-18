@@ -69,7 +69,7 @@ set_config() {
 }
 
 enable_all() {
-    local keys="Mipay VoiceAssist PersonalAssistant Mms ContentExtension YellowPage AiAsst RemoveMod HybridPlatform"
+    local keys="Mipay AppStore VoiceAssist PersonalAssistant Mms ContentExtension YellowPage AiAsst RemoveMod HybridPlatform"
     for key in $keys; do
         set_config $key "true"
     done
@@ -78,6 +78,7 @@ enable_all() {
 generate_default_config() {
     cat > $MODPATH/HyperOS3EULocalization.ini <<EOF
 Mipay=false
+AppStore=false
 HybridPlatform=false
 ContentExtension=false
 PersonalAssistant=false
@@ -123,7 +124,7 @@ else
 
     ui_print ""
     ui_print "Q3: Xiaomi smart card"
-    ui_print "  Smart Card / Transit Card / MiPay chain"
+    ui_print "  Smart Card / Transit Card / MiPay payment service"
     if vk_choose; then
         print_success "Selected Xiaomi smart card"
         set_config "Mipay" "true"
@@ -132,7 +133,17 @@ else
     fi
 
     ui_print ""
-    ui_print "Q4: System tweaks"
+    ui_print "Q4: Xiaomi App Store"
+    ui_print "  GetApps / Xiaomi Market"
+    if vk_choose; then
+        print_success "Selected Xiaomi App Store"
+        set_config "AppStore" "true"
+    else
+        print_info "Skipped Xiaomi App Store"
+    fi
+
+    ui_print ""
+    ui_print "Q5: System tweaks"
     ui_print "  CN region props / HybridPlatform"
     if vk_choose; then
         print_success "Selected system tweaks"
