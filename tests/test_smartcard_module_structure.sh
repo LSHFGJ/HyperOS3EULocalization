@@ -75,6 +75,7 @@ assert_file "$ROOT_DIR/system/product/priv-app/MIUIYellowPage/MIUIYellowPage.apk
 assert_file "$ROOT_DIR/system/product/app/MINextpay/MINextpay.apk"
 assert_file "$ROOT_DIR/system/product/app/MITSMClient/MITSMClient.apk"
 assert_file "$ROOT_DIR/system/product/app/UPTsmService/UPTsmService.apk"
+assert_file "$ROOT_DIR/system/product/app/UPTsmService/lib/arm64/libuptsmservice.so"
 assert_file "$ROOT_DIR/system/product/overlay/MmsFocusOverlay/MmsFocusOverlay.apk"
 assert_file "$ROOT_DIR/overlay-src/MmsFocusOverlay/AndroidManifest.xml"
 assert_file "$ROOT_DIR/overlay-src/MmsFocusOverlay/res/values/arrays.xml"
