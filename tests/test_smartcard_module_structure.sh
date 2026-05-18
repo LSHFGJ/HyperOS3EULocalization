@@ -58,6 +58,9 @@ assert_missing_path() {
 
 assert_missing_path "$ROOT_DIR/smartcard-module"
 assert_missing_path "$ROOT_DIR/toolbox"
+assert_missing_path "$ROOT_DIR/.github/workflows/module-structure.yml"
+assert_missing_path "$ROOT_DIR/system/product/app/MipayService"
+assert_missing_path "$ROOT_DIR/system/product/data-app"
 assert_executable "$BUILD_SCRIPT"
 assert_executable "$DIAG_SCRIPT"
 assert_executable "$UPDATE_BINARY"
@@ -149,10 +152,15 @@ assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/UPTsmServ
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MINextpay'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MITSMClient'
 assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'NextPay_\$API'
+assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MipayService'
+assert_not_contains "$ROOT_DIR/customize.sh" 'Calendar|Weather|Music|SoundRecorder|ThemeManager|媒体与生活|日历 / 天气 / 音乐 / 录音机'
+assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'Calendar|Weather|Music|SoundRecorder|ThemeManager|MIUICalendar|MIUIWeather|MIUIMusicT|MiuiAudioMonitor'
+assert_not_contains "$ROOT_DIR/lang/zh_CN.ini" 'CALENDAR|WEATHER|THEMEMANAGER|MUSIC|SOUNUDRECORDER|日历|天气|主题壁纸|音乐|录音机'
+assert_not_contains "$ROOT_DIR/lang/en_US.ini" 'CALENDAR|WEATHER|THEMEMANAGER|MUSIC|SOUNUDRECORDER|日历|天气|主题壁纸|音乐|录音机'
+assert_not_contains "$ROOT_DIR/README.md" '日历、天气、音乐、录音机|主题管理器'
 assert_contains "$ROOT_DIR/README.md" '^# HyperOS3 EU Localization$'
 assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3_EU_Localization_\$\{VERSION\}\.zip'
 assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3 EU Localization'
-assert_contains "$ROOT_DIR/.github/workflows/module-structure.yml" "'system/\*\*'"
 assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/AndroidManifest.xml" 'android:targetPackage="miui\.systemui\.plugin"'
 assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/AndroidManifest.xml" 'android:isStatic="true"'
 assert_contains "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay/AndroidManifest.xml" 'android:targetSdkVersion="28"'
