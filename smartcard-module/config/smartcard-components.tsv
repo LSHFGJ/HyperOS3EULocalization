@@ -1,6 +1,0 @@
-# component	package	target_path	stage
-MINextpay	com.miui.nextpay	product/app/MINextpay	required
-MITSMClient	com.miui.tsmclient	product/app/MITSMClient	required
-UPTsmService	com.unionpay.tsmservice.mi	product/app/UPTsmService	required
-PaymentService	com.xiaomi.payment	product/app/PaymentService	optional-cn-replacement
-XMNfcNci	com.android.nfc	product/pangu/system/app/XMNfcNci	optional-high-risk
