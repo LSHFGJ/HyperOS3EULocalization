@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="hyperos3.mms.focus.auth.overlay"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:minSdkVersion="28"
+        android:targetSdkVersion="28" />
+
+    <overlay
+        android:targetPackage="miui.systemui.plugin"
+        android:isStatic="true"
+        android:priority="999" />
+</manifest>

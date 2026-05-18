@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="config_pass_xms_permission">
+        <item>com.android.keyguard</item>
+        <item>com.xiaomi.mipushdemo</item>
+        <item>com.os.callservice</item>
+        <item>com.android.mms</item>
+    </string-array>
+</resources>

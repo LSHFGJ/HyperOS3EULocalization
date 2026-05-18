@@ -11,6 +11,8 @@ on:
       - 'module.prop'
       - 'customize.sh'
       - 'tools/**'
+      - 'system/**'
+      - 'overlay-src/**'
   pull_request:
     paths:
       - 'scripts/build-smartcard-module.sh'
@@ -21,6 +23,8 @@ on:
       - 'module.prop'
       - 'customize.sh'
       - 'tools/**'
+      - 'system/**'
+      - 'overlay-src/**'
   workflow_dispatch:
 
 permissions:
