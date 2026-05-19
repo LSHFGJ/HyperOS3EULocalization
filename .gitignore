@@ -16,6 +16,12 @@ payload-dumper-go_*.tar.gz
 rom/
 extracted_new/
 
+# Local-only notes and validation helpers
+archive/
+docs/
+scripts/
+tests/
+
 # Python virtual environment
 .venv/
 
