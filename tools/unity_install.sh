@@ -96,7 +96,7 @@ AiAsst=${AiAsst:-false}
 VoiceAssist=${VoiceAssist:-false}
 RemoveMod=${RemoveMod:-false}
 
-if [ ! -e "$MODPATH/system/product/app/MINextpay" ] || [ ! -e "$MODPATH/system/product/app/MITSMClient" ] || [ ! -e "$MODPATH/system/product/app/UPTsmService" ] || [ ! -e "$MODPATH/system/product/app/PaymentService" ] ;then
+if [ ! -e "$MODPATH/system/product/app/MINextpay" ] || [ ! -e "$MODPATH/system/product/app/MITSMClient" ] || [ ! -e "$MODPATH/system/product/app/MipayWallet" ] || [ ! -e "$MODPATH/system/product/app/UPTsmService" ] || [ ! -e "$MODPATH/system/product/app/PaymentService" ] ;then
     Mipay=false
     log_warn "Smart-card payload incomplete; disabling Xiaomi smart card."
 fi
@@ -154,6 +154,7 @@ log_section "Payloads"
 if ! bool_enabled "$Mipay" ;then
     remove_path "system/product/app/MINextpay"
     remove_path "system/product/app/MITSMClient"
+    remove_path "system/product/app/MipayWallet"
     remove_path "system/product/app/UPTsmService"
     remove_path "system/product/app/PaymentService"
 fi

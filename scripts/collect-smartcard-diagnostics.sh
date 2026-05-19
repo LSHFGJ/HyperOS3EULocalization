@@ -6,8 +6,8 @@ ADB="${ADB:-adb}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 OUT_DIR="$OUT_ROOT/smartcard-$STAMP"
 
-PACKAGES="com.miui.nextpay com.miui.tsmclient com.unionpay.tsmservice.mi com.xiaomi.payment com.xiaomi.market com.android.nfc com.android.permissioncontroller com.miui.home com.android.systemui com.rongcard.eid com.xiaomi.otrpbroker"
-NAMESPACE_PROBES="com.miui.tsmclient:/product/app/MITSMClient/MITSMClient.apk com.android.permissioncontroller:/product/app/MITSMClient/MITSMClient.apk com.miui.home:/product/app/MITSMClient/MITSMClient.apk com.android.systemui:/product/app/MITSMClient/MITSMClient.apk com.miui.nextpay:/product/app/MINextpay/MINextpay.apk com.unionpay.tsmservice.mi:/product/app/UPTsmService/UPTsmService.apk com.xiaomi.payment:/product/app/PaymentService/PaymentService.apk com.xiaomi.market:/product/app/MIUISuperMarket/MIUISuperMarket.apk"
+PACKAGES="com.mipay.wallet com.miui.nextpay com.miui.tsmclient com.unionpay.tsmservice.mi com.xiaomi.payment com.xiaomi.market com.android.nfc com.android.permissioncontroller com.miui.home com.android.systemui com.rongcard.eid com.xiaomi.otrpbroker"
+NAMESPACE_PROBES="com.mipay.wallet:/product/app/MipayWallet/MipayWallet.apk com.miui.tsmclient:/product/app/MITSMClient/MITSMClient.apk com.android.permissioncontroller:/product/app/MITSMClient/MITSMClient.apk com.miui.home:/product/app/MITSMClient/MITSMClient.apk com.android.systemui:/product/app/MITSMClient/MITSMClient.apk com.miui.nextpay:/product/app/MINextpay/MINextpay.apk com.unionpay.tsmservice.mi:/product/app/UPTsmService/UPTsmService.apk com.xiaomi.payment:/product/app/PaymentService/PaymentService.apk com.xiaomi.market:/product/app/MIUISuperMarket/MIUISuperMarket.apk"
 
 usage() {
   cat <<USAGE
@@ -76,7 +76,7 @@ for probe in $NAMESPACE_PROBES; do
       printf '\n== app mount namespace path ==\n'
       "$ADB" shell su -c "nsenter -t '$pid' -m -- ls -l '$probe_path'" 2>&1 || true
       printf '\n== app mount namespace module mounts ==\n'
-"$ADB" shell su -c "nsenter -t '$pid' -m -- cat /proc/self/mountinfo | grep -E 'KSU|KernelSU|SukiSU|HyperOS3EULocalization|MITSMClient|MINextpay|UPTsmService|PaymentService|MIUISuperMarket'" 2>&1 || true
+"$ADB" shell su -c "nsenter -t '$pid' -m -- cat /proc/self/mountinfo | grep -E 'KSU|KernelSU|SukiSU|HyperOS3EULocalization|MipayWallet|MITSMClient|MINextpay|UPTsmService|PaymentService|MIUISuperMarket'" 2>&1 || true
     fi
   } > "$OUT_DIR/namespace-$safe_name.txt"
 done
@@ -88,9 +88,9 @@ done
 {
   printf 'Diagnostics written to %s\n' "$OUT_DIR"
   printf '\nNamespace visibility:\n'
-grep -H -E 'pid=|No such file or directory|MITSMClient\.apk|MINextpay\.apk|UPTsmService\.apk|PaymentService\.apk|MIUISuperMarket\.apk|KSU|KernelSU|SukiSU|HyperOS3EULocalization' \
+grep -H -E 'pid=|No such file or directory|MipayWallet\.apk|MITSMClient\.apk|MINextpay\.apk|UPTsmService\.apk|PaymentService\.apk|MIUISuperMarket\.apk|KSU|KernelSU|SukiSU|HyperOS3EULocalization' \
     "$OUT_DIR"/namespace-*.txt 2>/dev/null || true
   printf '\nLikely crash lines:\n'
-  grep -E 'FATAL EXCEPTION|AndroidRuntime|Process: com\.(miui\.nextpay|miui\.tsmclient|unionpay\.tsmservice\.mi|xiaomi\.(payment|market))|NoClassDefFoundError|ClassNotFoundException|SecurityException|UnsatisfiedLinkError|Resources\$NotFoundException' \
+  grep -E 'FATAL EXCEPTION|AndroidRuntime|Process: (com\.mipay\.wallet|com\.(miui\.nextpay|miui\.tsmclient|unionpay\.tsmservice\.mi|xiaomi\.(payment|market)))|NoClassDefFoundError|ClassNotFoundException|SecurityException|UnsatisfiedLinkError|Resources\$NotFoundException' \
     "$OUT_DIR/logcat-crash.txt" "$OUT_DIR/logcat-threadtime.txt" "$OUT_DIR/dropbox-crash.txt" 2>/dev/null || true
 } | tee "$OUT_DIR/summary.txt"

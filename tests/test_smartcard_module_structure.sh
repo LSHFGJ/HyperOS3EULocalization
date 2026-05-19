@@ -74,6 +74,7 @@ assert_file "$ROOT_DIR/system/product/priv-app/MIUIContentExtension/MIUIContentE
 assert_file "$ROOT_DIR/system/product/priv-app/MIUIYellowPage/MIUIYellowPage.apk"
 assert_file "$ROOT_DIR/system/product/app/MINextpay/MINextpay.apk"
 assert_file "$ROOT_DIR/system/product/app/MITSMClient/MITSMClient.apk"
+assert_file "$ROOT_DIR/system/product/app/MipayWallet/MipayWallet.apk"
 assert_file "$ROOT_DIR/system/product/app/UPTsmService/UPTsmService.apk"
 assert_file "$ROOT_DIR/system/product/app/UPTsmService/lib/arm64/libuptsmservice.so"
 assert_file "$ROOT_DIR/system/product/app/PaymentService/PaymentService.apk"
@@ -121,6 +122,7 @@ assert_contains "$BUILD_SCRIPT" 'for component in MINextpay MITSMClient UPTsmSer
 assert_contains "$DIAG_SCRIPT" '^OUT_ROOT="\$\{OUT_ROOT:-/mnt/e/rom/_analysis/device-logs\}"$'
 assert_contains "$DIAG_SCRIPT" 'logcat -b crash'
 assert_contains "$DIAG_SCRIPT" 'dumpsys package'
+assert_contains "$DIAG_SCRIPT" 'com\.mipay\.wallet'
 assert_contains "$DIAG_SCRIPT" 'com\.xiaomi\.payment'
 assert_contains "$DIAG_SCRIPT" 'com\.xiaomi\.market'
 assert_contains "$DIAG_SCRIPT" 'NAMESPACE_PROBES='
@@ -133,6 +135,7 @@ assert_contains "$DIAG_SCRIPT" 'HyperOS3EULocalization'
 assert_not_contains "$DIAG_SCRIPT" 'HyperOS3MmsFocusAuthOverlay'
 assert_contains "$ROOT_DIR/README.md" 'Umount modules'
 assert_contains "$ROOT_DIR/README.md" 'com\.miui\.tsmclient'
+assert_contains "$ROOT_DIR/README.md" 'com\.mipay\.wallet'
 assert_contains "$ROOT_DIR/README.md" 'com\.xiaomi\.payment'
 assert_contains "$ROOT_DIR/README.md" 'com\.android\.permissioncontroller'
 assert_contains "$ROOT_DIR/README.md" 'com\.miui\.home'
@@ -165,6 +168,7 @@ assert_contains "$ROOT_DIR/README.md" 'system/product/overlay/MmsFocusOverlay'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/UPTsmService'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MINextpay'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MITSMClient'
+assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MipayWallet'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/PaymentService'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MIUISuperMarket'
 assert_contains "$ROOT_DIR/customize.sh" 'AppStore=false'
