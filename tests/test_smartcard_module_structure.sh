@@ -75,6 +75,8 @@ assert_file "$ROOT_DIR/system/product/priv-app/MIUIYellowPage/MIUIYellowPage.apk
 assert_file "$ROOT_DIR/system/product/app/MINextpay/MINextpay.apk"
 assert_file "$ROOT_DIR/system/product/app/MITSMClient/MITSMClient.apk"
 assert_file "$ROOT_DIR/system/product/app/MipayWallet/MipayWallet.apk"
+assert_file "$ROOT_DIR/system/product/app/MipayWallet/lib/arm64/libflutter.so"
+assert_file "$ROOT_DIR/system/product/app/MipayWallet/lib/arm64/libapp.so"
 assert_file "$ROOT_DIR/system/product/app/UPTsmService/UPTsmService.apk"
 assert_file "$ROOT_DIR/system/product/app/UPTsmService/lib/arm64/libuptsmservice.so"
 assert_file "$ROOT_DIR/system/product/app/PaymentService/PaymentService.apk"
