@@ -170,4 +170,5 @@ set_perm_recursive $MODPATH 0 0 0755 0644
 ui_print ""
 ui_print "INSTALLATION COMPLETED"
 ui_print "Reboot required to apply changes."
+ui_print "KernelSU: enable a mount metamodule first; magic_mount_rs is recommended."
 ui_print "KernelSU/SukiSU: disable app-profile module unmount if resources are missing."
