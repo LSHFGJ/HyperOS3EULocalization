@@ -81,9 +81,20 @@ assert_file "$ROOT_DIR/system/product/app/UPTsmService/UPTsmService.apk"
 assert_file "$ROOT_DIR/system/product/app/UPTsmService/lib/arm64/libuptsmservice.so"
 assert_file "$ROOT_DIR/system/product/app/PaymentService/PaymentService.apk"
 assert_file "$ROOT_DIR/system/product/app/MIUISuperMarket/MIUISuperMarket.apk"
-assert_file "$ROOT_DIR/system/product/overlay/MmsFocusOverlay/MmsFocusOverlay.apk"
-assert_file "$ROOT_DIR/overlay-src/MmsFocusOverlay/AndroidManifest.xml"
-assert_file "$ROOT_DIR/overlay-src/MmsFocusOverlay/res/values/arrays.xml"
+assert_file "$ROOT_DIR/system/product/overlay/FocusXmsOverlay/FocusXmsOverlay.apk"
+assert_file "$ROOT_DIR/overlay-src/FocusXmsOverlay/AndroidManifest.xml"
+assert_file "$ROOT_DIR/overlay-src/FocusXmsOverlay/res/values/arrays.xml"
+assert_zip_entry "$ROOT_DIR/system/product/overlay/FocusXmsOverlay/FocusXmsOverlay.apk" 'AndroidManifest.xml'
+assert_zip_entry "$ROOT_DIR/system/product/overlay/FocusXmsOverlay/FocusXmsOverlay.apk" 'resources.arsc'
+assert_zip_entry "$ROOT_DIR/system/product/overlay/FocusXmsOverlay/FocusXmsOverlay.apk" 'META-INF/OVERLAY.RSA'
+assert_contains "$ROOT_DIR/overlay-src/FocusXmsOverlay/AndroidManifest.xml" 'package="focus\.xms\.overlay"'
+assert_contains "$ROOT_DIR/overlay-src/FocusXmsOverlay/AndroidManifest.xml" 'android:targetPackage="miui\.systemui\.plugin"'
+assert_contains "$ROOT_DIR/overlay-src/FocusXmsOverlay/AndroidManifest.xml" 'android:isStatic="true"'
+assert_contains "$ROOT_DIR/overlay-src/FocusXmsOverlay/AndroidManifest.xml" 'android:priority="999"'
+assert_contains "$ROOT_DIR/overlay-src/FocusXmsOverlay/res/values/arrays.xml" 'config_pass_xms_permission'
+assert_contains "$ROOT_DIR/overlay-src/FocusXmsOverlay/res/values/arrays.xml" 'com\.android\.mms'
+assert_missing_path "$ROOT_DIR/system/product/overlay/MmsFocusOverlay"
+assert_missing_path "$ROOT_DIR/overlay-src/MmsFocusOverlay"
 assert_missing_path "$ROOT_DIR/system/product/overlay/HyperOS3MmsFocusAuthOverlay"
 assert_missing_path "$ROOT_DIR/overlay-src/HyperOS3MmsFocusAuthOverlay"
 
@@ -96,6 +107,7 @@ assert_not_contains "$ROOT_DIR/module.prop" 'target(Model|MiuiVersion)|WMCCNXM|W
 assert_contains "$ROOT_DIR/customize.sh" 'HyperOS3 EU Localization v2\.0'
 assert_contains "$ROOT_DIR/customize.sh" 'Author: LSHFGJ'
 assert_contains "$ROOT_DIR/customize.sh" 'Target: Any HyperOS 3 device/build'
+assert_not_contains "$ROOT_DIR/customize.sh" 'fallback-product\.img|mkfs\.ext4|create_kernelsu_fallback_image'
 assert_not_contains "$ROOT_DIR/customize.sh" '╔|╚|║|━|┌|└|│|Feature Selection|Fonts|SogouInput|MiuiIme|GboardTheme|VideocallBeautify|NotificationFilter|VirtualSim|VoiceTrigger'
 assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'MODTARGETMODEL|MODTARGETMIUIVERSION|LANG_TEXT_TARGET_MIUI_VERSION|LANG_TEXT_TARGET_MODEL'
 assert_not_contains "$ROOT_DIR/tools/unity_install.sh" 'SYSTEM_VERSION_NOT_MATCH|targetMiuiVersion|targetModel'
@@ -115,6 +127,7 @@ assert_contains "$BUILD_SCRIPT" '^cleanup_work_files\(\) \{$'
 assert_contains "$BUILD_SCRIPT" 'rm -f "\$PRODUCT_IMG"'
 assert_contains "$BUILD_SCRIPT" 'rm -rf "\$MODULE_BUILD"'
 assert_contains "$BUILD_SCRIPT" 'rm -f "\$ZIP_PATH"'
+assert_not_contains "$BUILD_SCRIPT" 'post-fs-data\.sh'
 assert_contains "$BUILD_SCRIPT" 'copy_component\(\)'
 assert_contains "$BUILD_SCRIPT" 'apk_has_dex\(\)'
 assert_contains "$BUILD_SCRIPT" 'classes\.dex'
@@ -135,6 +148,10 @@ assert_contains "$DIAG_SCRIPT" 'nsenter -t'
 assert_contains "$DIAG_SCRIPT" 'MITSMClient\.apk'
 assert_contains "$DIAG_SCRIPT" 'HyperOS3EULocalization'
 assert_not_contains "$DIAG_SCRIPT" 'HyperOS3MmsFocusAuthOverlay'
+assert_contains "$ROOT_DIR/README.md" 'KernelSU-Modules-Repo/magic_mount_rs'
+assert_contains "$ROOT_DIR/README.md" 'Magic Mount Metamodule'
+assert_contains "$ROOT_DIR/README.md" '推荐.*magic_mount_rs'
+assert_contains "$ROOT_DIR/README.md" '其他等价元模块也可以'
 assert_contains "$ROOT_DIR/README.md" 'Umount modules'
 assert_contains "$ROOT_DIR/README.md" 'com\.miui\.tsmclient'
 assert_contains "$ROOT_DIR/README.md" 'com\.mipay\.wallet'
@@ -149,6 +166,9 @@ assert_contains "$UPDATE_BINARY" 'customize\.sh'
 assert_contains "$UPDATE_BINARY" 'Magisk-compatible|root-module'
 assert_not_contains "$UPDATE_BINARY" '\*\*\*\*\*\*\*\*\*\*'
 assert_contains "$ROOT_DIR/customize.sh" '/system/bin/timeout 1 /system/bin/getevent'
+assert_contains "$ROOT_DIR/customize.sh" 'magic_mount_rs'
+assert_contains "$ROOT_DIR/customize.sh" 'mount metamodule'
+assert_contains "$DIAG_SCRIPT" 'magic_mount'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'HyperOS3EULocalization\.ini'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/AiAsstVision'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/priv-app/PersonalAssistant'
@@ -163,10 +183,13 @@ assert_contains "$ROOT_DIR/README.md" 'com\.xiaomi\.aiasst\.vision'
 assert_contains "$ROOT_DIR/README.md" 'com\.xiaomi\.aiasst\.service'
 assert_contains "$ROOT_DIR/README.md" 'com\.miui\.hybrid'
 assert_contains "$ROOT_DIR/README.md" 'com\.xiaomi\.market'
+assert_contains "$ROOT_DIR/README.md" 'Focus / XMS 权限补全'
+assert_contains "$ROOT_DIR/README.md" 'system/product/overlay/FocusXmsOverlay/FocusXmsOverlay\.apk'
+assert_contains "$ROOT_DIR/README.md" 'config_pass_xms_permission'
+assert_contains "$ROOT_DIR/README.md" 'system/product/overlay/'
 assert_contains "$ROOT_DIR/README.md" 'com\.mipay\.wallet'
 assert_contains "$ROOT_DIR/README.md" 'com\.miui\.tsmclient'
 assert_contains "$ROOT_DIR/README.md" 'system/product/app/MITSMClient'
-assert_contains "$ROOT_DIR/README.md" 'system/product/overlay/MmsFocusOverlay'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/UPTsmService'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MINextpay'
 assert_contains "$ROOT_DIR/tools/unity_install.sh" 'system/product/app/MITSMClient'
@@ -186,20 +209,12 @@ assert_not_contains "$ROOT_DIR/service.sh" 'NotificationFilter|notification_feat
 assert_not_contains "$ROOT_DIR/lang/zh_CN.ini" 'CALENDAR|WEATHER|THEMEMANAGER|MUSIC|SOUNUDRECORDER|FONTS|MIUIIME|SOUGOUINPUT|GBOARDTHEME|VIDEOCALLBEAUTIFY|NOTIFICATIONFILTER|NOTIFICATIONGROUP|VIRTUALSIM|VOICETRIGGER|日历|天气|主题壁纸|音乐|录音机|全面屏键盘优化|搜狗输入法|谷歌键盘|视频通话美颜|通知过滤|通知聚合|全球上网|语音唤醒|字体'
 assert_not_contains "$ROOT_DIR/lang/en_US.ini" 'CALENDAR|WEATHER|THEMEMANAGER|MUSIC|SOUNUDRECORDER|FONTS|MIUIIME|SOUGOUINPUT|GBOARDTHEME|VIDEOCALLBEAUTIFY|NOTIFICATIONFILTER|NOTIFICATIONGROUP|VIRTUALSIM|VOICETRIGGER|日历|天气|主题壁纸|音乐|录音机|全面屏键盘优化|搜狗输入法|谷歌键盘|视频通话美颜|通知过滤|通知聚合|全球上网|语音唤醒|字体'
 assert_not_contains "$ROOT_DIR/README.md" '日历、天气、音乐、录音机|主题管理器'
+assert_not_contains "$ROOT_DIR/README.md" '^## 不包含的内容$|^## 本地构建$|^## 排查问题$'
 assert_contains "$ROOT_DIR/README.md" '^# HyperOS3 EU Localization$'
 assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3_EU_Localization_\$\{VERSION\}\.zip'
 assert_contains "$ROOT_DIR/.github/workflows/release.yml" 'HyperOS3 EU Localization'
-assert_contains "$ROOT_DIR/overlay-src/MmsFocusOverlay/AndroidManifest.xml" 'package="mms\.focus\.overlay"'
-assert_contains "$ROOT_DIR/overlay-src/MmsFocusOverlay/AndroidManifest.xml" 'android:targetPackage="miui\.systemui\.plugin"'
-assert_contains "$ROOT_DIR/overlay-src/MmsFocusOverlay/AndroidManifest.xml" 'android:isStatic="true"'
-assert_contains "$ROOT_DIR/overlay-src/MmsFocusOverlay/AndroidManifest.xml" 'android:targetSdkVersion="28"'
-assert_contains "$ROOT_DIR/overlay-src/MmsFocusOverlay/res/values/arrays.xml" '<string-array name="config_pass_xms_permission">'
-assert_contains "$ROOT_DIR/overlay-src/MmsFocusOverlay/res/values/arrays.xml" '<item>com\.android\.mms</item>'
-assert_zip_entry "$ROOT_DIR/system/product/overlay/MmsFocusOverlay/MmsFocusOverlay.apk" 'AndroidManifest.xml'
-assert_zip_entry "$ROOT_DIR/system/product/overlay/MmsFocusOverlay/MmsFocusOverlay.apk" 'resources.arsc'
-assert_zip_entry "$ROOT_DIR/system/product/overlay/MmsFocusOverlay/MmsFocusOverlay.apk" 'META-INF/OVERLAY.RSA'
 
-assert_not_contains_tree "$ROOT_DIR" 'smartcard-module/|SmartCardPayload|HyperOS3MmsFocusAuthOverlay|hyperos3\.mms\.focus\.auth\.overlay'
+assert_not_contains_tree "$ROOT_DIR" 'smartcard-module/|SmartCardPayload|HyperOS3MmsFocusAuthOverlay|hyperos3\.mms\.focus\.auth\.overlay|MmsFocusOverlay|mms\.focus\.overlay'
 
 if [[ -e "$ROOT_DIR/system/product/app/AiasstVision" || -e "$ROOT_DIR/system/product/priv-app/MiuiMms" || -e "$ROOT_DIR/system/product/priv-app/MIUIPersonalAssistantPhoneOS3" ]]; then
   fail "legacy payload path still exists; use actual HyperOS 3 codePath directory names"
