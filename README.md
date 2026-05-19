@@ -24,14 +24,12 @@
 | 功能 | 包 / 组件 | 模块路径 |
 | --- | --- | --- |
 | 小米智能卡客户端 | `com.miui.tsmclient` | `system/product/app/MITSMClient` |
+| 小米钱包 | `com.mipay.wallet` | `system/product/app/MipayWallet` |
 | 小米支付 / NextPay | `com.miui.nextpay` | `system/product/app/MINextpay` |
 | 银联 TSM 服务 | `com.unionpay.tsmservice.mi` | `system/product/app/UPTsmService` |
 | 小米支付服务 | `com.xiaomi.payment` | `system/product/app/PaymentService` |
 
-这些 payload 已从当前 pandora 国行 HyperOS 3 ROM 对齐；构建脚本仍会在本地 payload 不完整时从指定国行 ROM 中补齐智能卡链路组件。
-
-> [!NOTE]
-> 当前 pandora 国行 ROM 镜像中没有独立的 `com.mipay.wallet` 钱包主 APK。模块恢复的是智能卡、支付服务和应用商店侧的必要系统组件，不会伪造一个 ROM 中不存在的钱包主包。
+智能卡核心 payload 已从当前 pandora 国行 HyperOS 3 ROM 对齐。`com.mipay.wallet` 钱包主 APK 来自小米应用商店官方分发包，因为当前 pandora ROM 镜像中只保留了它的图标和 pipeline 信息，没有预装 APK 本体。
 
 ### 短信验证码灵动岛修复
 
@@ -99,6 +97,7 @@
 
 ```text
 com.miui.tsmclient
+com.mipay.wallet
 com.xiaomi.payment
 com.android.permissioncontroller
 com.miui.home
