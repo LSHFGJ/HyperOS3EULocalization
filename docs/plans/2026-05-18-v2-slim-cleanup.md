@@ -16,7 +16,7 @@
 - Modify: `tests/test_smartcard_module_structure.sh`
 
 **Steps:**
-1. Assert new overlay paths exist: `system/product/overlay/MmsFocusOverlay/MmsFocusOverlay.apk` and `overlay-src/MmsFocusOverlay/*`.
+1. Assert new overlay paths exist: `system/product/overlay/FocusXmsOverlay/FocusXmsOverlay.apk` and `overlay-src/FocusXmsOverlay/*`.
 2. Assert legacy verbose overlay paths and package names do not exist.
 3. Assert stale no-payload installer options are absent from `customize.sh` and `tools/unity_install.sh`: `Fonts`, `SogouInput`, `MiuiIme`, `GboardTheme`, `VideocallBeautify`, `NotificationFilter`, `VirtualSim`, `VoiceTrigger`.
 4. Assert verbose installer line-art is absent: box glyphs and long star/divider runs.
@@ -36,15 +36,15 @@
 ### Task 3: Rename MMS focus overlay
 
 **Files:**
-- Move the verbose MMS focus overlay source directory to `overlay-src/MmsFocusOverlay`.
-- Move the verbose packaged MMS focus overlay directory to `system/product/overlay/MmsFocusOverlay`.
-- Modify: `overlay-src/MmsFocusOverlay/AndroidManifest.xml`
+- Move the verbose MMS focus overlay source directory to `overlay-src/FocusXmsOverlay`.
+- Move the verbose packaged MMS focus overlay directory to `system/product/overlay/FocusXmsOverlay`.
+- Modify: `overlay-src/FocusXmsOverlay/AndroidManifest.xml`
 - Modify: `tests/test_smartcard_module_structure.sh`
 - Modify: `README.md`
 
 **Steps:**
 1. Rename source and packaged overlay directories/APKs.
-2. Change manifest package to `mms.focus.overlay`.
+2. Change manifest package to `focus.xms.overlay`.
 3. Keep target package `miui.systemui.plugin`, static overlay, priority, and target SDK 28.
 4. Verify APK still contains `AndroidManifest.xml`, `resources.arsc`, and signature metadata.
 

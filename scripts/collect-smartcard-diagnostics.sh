@@ -76,7 +76,7 @@ for probe in $NAMESPACE_PROBES; do
       printf '\n== app mount namespace path ==\n'
       "$ADB" shell su -c "nsenter -t '$pid' -m -- ls -l '$probe_path'" 2>&1 || true
       printf '\n== app mount namespace module mounts ==\n'
-"$ADB" shell su -c "nsenter -t '$pid' -m -- cat /proc/self/mountinfo | grep -E 'KSU|KernelSU|SukiSU|HyperOS3EULocalization|MipayWallet|MITSMClient|MINextpay|UPTsmService|PaymentService|MIUISuperMarket'" 2>&1 || true
+"$ADB" shell su -c "nsenter -t '$pid' -m -- cat /proc/self/mountinfo | grep -E 'KSU|KernelSU|SukiSU|magic_mount|MagicMount|HyperOS3EULocalization|MipayWallet|MITSMClient|MINextpay|UPTsmService|PaymentService|MIUISuperMarket'" 2>&1 || true
     fi
   } > "$OUT_DIR/namespace-$safe_name.txt"
 done
@@ -88,7 +88,7 @@ done
 {
   printf 'Diagnostics written to %s\n' "$OUT_DIR"
   printf '\nNamespace visibility:\n'
-grep -H -E 'pid=|No such file or directory|MipayWallet\.apk|MITSMClient\.apk|MINextpay\.apk|UPTsmService\.apk|PaymentService\.apk|MIUISuperMarket\.apk|KSU|KernelSU|SukiSU|HyperOS3EULocalization' \
+grep -H -E 'pid=|No such file or directory|MipayWallet\.apk|MITSMClient\.apk|MINextpay\.apk|UPTsmService\.apk|PaymentService\.apk|MIUISuperMarket\.apk|KSU|KernelSU|SukiSU|magic_mount|MagicMount|HyperOS3EULocalization' \
     "$OUT_DIR"/namespace-*.txt 2>/dev/null || true
   printf '\nLikely crash lines:\n'
   grep -E 'FATAL EXCEPTION|AndroidRuntime|Process: (com\.mipay\.wallet|com\.(miui\.nextpay|miui\.tsmclient|unionpay\.tsmservice\.mi|xiaomi\.(payment|market)))|NoClassDefFoundError|ClassNotFoundException|SecurityException|UnsatisfiedLinkError|Resources\$NotFoundException' \
