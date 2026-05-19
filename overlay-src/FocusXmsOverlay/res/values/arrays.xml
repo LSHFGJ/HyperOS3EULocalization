@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="config_pass_xms_permission">
+        <item>com.autonavi.minimap</item>
+        <item>com.sankuai.meituan</item>
+        <item>com.sankuai.meituan.takeoutnew</item>
+        <item>me.ele</item>
+        <item>com.eg.android.AlipayGphone</item>
+        <item>com.xiaomi.smarthome</item>
+        <item>com.android.calendar</item>
+        <item>com.xiaomi.calendar</item>
+        <item>com.android.soundrecorder</item>
+        <item>com.android.deskclock</item>
+        <item>com.android.mms</item>
+        <item>com.android.settings</item>
+        <item>com.android.incallui</item>
+        <item>com.android.server.telecom</item>
+        <item>com.miui.personalassistant</item>
+        <item>com.xiaomi.xmsf</item>
+        <item>com.xiaomi.mipushdemo</item>
+        <item>com.miui.securitycenter</item>
+        <item>com.dianping.v1</item>
+        <item>com.jingyao.easybike</item>
+        <item>com.xiaoai.aireco</item>
+        <item>com.sdu.didi.psnger</item>
+        <item>com.cainiao.wireless</item>
+        <item>com.mi.health</item>
+        <item>com.miui.weather2</item>
+        <item>com.mipay.wallet</item>
+        <item>com.android.keyguard</item>
+        <item>com.miui.guardprovider</item>
+        <item>com.miui.mishare.connectivity</item>
+        <item>miui.systemui.plugin</item>
+        <item>com.miui.voiceassist</item>
+        <item>com.android.updater</item>
+        <item>com.xiaomi.aicr</item>
+        <item>com.xiaomi.incallui</item>
+        <item>com.miui.tsmclient</item>
+        <item>com.xiaomi.mihomemanager</item>
+        <item>com.xiaomi.voiceassistant</item>
+        <item>com.aios.osbot</item>
+        <item>com.os.callservice</item>
+    </string-array>
+</resources>
